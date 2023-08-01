@@ -7,7 +7,8 @@ import org.example.view.GameView;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,13 +17,10 @@ import java.util.List;
 
 import static java.lang.Math.pow;
 
-public class SessionPanel extends JPanel{
+public class SessionPanel extends JPanel {
     private final GameView parent;
     private final List<JButton> cards = new ArrayList<>();
     private String cardBack;
-    private List<Integer> nums = new ArrayList<>();
-    private Timer timer;
-    private Boolean isRepeat = true;
 
 
     public void createField(Integer mod) {
@@ -34,7 +32,6 @@ public class SessionPanel extends JPanel{
                 setDefaultCard(mod, i, j);
             }
         }
-        this.setFocusable(true);
     }
 
     private void setDefaultCard(Integer mod, int i, int j) {
@@ -103,81 +100,6 @@ public class SessionPanel extends JPanel{
     }
 
     public SessionPanel(GameView parent) {
-        KeyboardFocusManager.getCurrentKeyboardFocusManager()
-                .addKeyEventDispatcher(new KeyEventDispatcher() {
-                    @Override
-                    public boolean dispatchKeyEvent(KeyEvent e) {
-                        int num = e.getKeyCode()-48;
-                        if (num >=0 && num <=9) {
-
-                            System.out.println(num);
-                            nums.add(num);
-                        }
-                        timer = new Timer(2000, new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                if (isRepeat == false) {
-                                if (nums.size() == 2) {
-                                    parent.notify(new CardChosenEvent(nums.get(0)));
-                                    nums = new ArrayList<>();
-                                }
-                                else if (nums.size() == 4) {
-                                    int newnum = nums.get(0) * 10 + nums.get(2);
-                                    System.out.println(newnum + "pip");
-                                    parent.notify(new CardChosenEvent(newnum));
-                                    nums = new ArrayList<>();
-                                }
-
-                                isRepeat = true;
-                            }
-                            }
-                        });
-                        timer.start();
-                        isRepeat = false;
-                        return false;
-                    }
-                });
-
-        this.setFocusable(true);
-//        this.addKeyListener(new KeyAdapter() {
-//            @Override
-//            public void keyTyped(KeyEvent e) {
-//                int num = (int)e.getKeyChar();
-//                System.out.println(num);
-//                nums.add(num);
-//                try {
-//                    Thread.sleep(1000);
-//                } catch (InterruptedException ex) {
-//                    throw new RuntimeException(ex);
-//                }
-//                if (nums.size() == 1) {
-//                    parent.notify(new CardChosenEvent(cards.indexOf(nums.get(0))));
-//                }
-//                else if (nums.size() == 2) {
-//                    int newnum = nums.get(0) * 10 + nums.get(1);
-//                    parent.notify(new CardChosenEvent(cards.indexOf(newnum)));
-//                }
-//            }
-//
-//            @Override
-//            public void keyPressed(KeyEvent e) {
-//                int num = (int)e.getKeyChar();
-//                System.out.println(num);
-//                nums.add(num);
-//                try {
-//                    Thread.sleep(1000);
-//                } catch (InterruptedException ex) {
-//                    throw new RuntimeException(ex);
-//                }
-//                if (nums.size() == 1) {
-//                    parent.notify(new CardChosenEvent(cards.indexOf(nums.get(0))));
-//                }
-//                else if (nums.size() == 2) {
-//                    int newnum = nums.get(0) * 10 + nums.get(1);
-//                    parent.notify(new CardChosenEvent(cards.indexOf(newnum)));
-//                }
-//            }
-//        });
         this.setLayout(new GridBagLayout());
         this.setBackground(Color.pink);
         this.parent = parent;
@@ -202,64 +124,4 @@ public class SessionPanel extends JPanel{
         repaint();
     }
 
-//    @Override
-//    public void keyTyped(KeyEvent e) {
-//        int num = (int)e.getKeyChar();
-//        System.out.println(num);
-//        nums.add(num);
-//        try {
-//            Thread.sleep(1000);
-//        } catch (InterruptedException ex) {
-//            throw new RuntimeException(ex);
-//        }
-//        if (nums.size() == 1) {
-//            parent.notify(new CardChosenEvent(cards.indexOf(nums.get(0))));
-//        }
-//        else if (nums.size() == 2) {
-//            int newnum = nums.get(0) * 10 + nums.get(1);
-//            parent.notify(new CardChosenEvent(cards.indexOf(newnum)));
-//        }
-//        System.out.println(num);
-//    }
-//
-//    @Override
-//    public void keyPressed(KeyEvent e) {
-//        int num = (int)e.getKeyChar();
-//        System.out.println(num);
-//        nums.add(num);
-//        try {
-//            Thread.sleep(1000);
-//        } catch (InterruptedException ex) {
-//            throw new RuntimeException(ex);
-//        }
-//        if (nums.size() == 1) {
-//            parent.notify(new CardChosenEvent(cards.indexOf(nums.get(0))));
-//        }
-//        else if (nums.size() == 2) {
-//            int newnum = nums.get(0) * 10 + nums.get(1);
-//            parent.notify(new CardChosenEvent(cards.indexOf(newnum)));
-//        }
-//        System.out.println(num);
-//    }
-//
-//    @Override
-//    public void keyReleased(KeyEvent e) {
-//
-//        int num = (int)e.getKeyChar();
-//        System.out.println(num);
-//        nums.add(num);
-//        try {
-//            Thread.sleep(1000);
-//        } catch (InterruptedException ex) {
-//            throw new RuntimeException(ex);
-//        }
-//        if (nums.size() == 1) {
-//            parent.notify(new CardChosenEvent(cards.indexOf(nums.get(0))));
-//        }
-//        else if (nums.size() == 2) {
-//            int newnum = nums.get(0) * 10 + nums.get(1);
-//            parent.notify(new CardChosenEvent(cards.indexOf(newnum)));
-//        }
-//
-//    }
 }
